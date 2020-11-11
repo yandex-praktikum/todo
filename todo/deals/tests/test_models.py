@@ -21,13 +21,13 @@ class TaskModelTest(TestCase):
     def test_verbose_name(self):
         """verbose_name в полях совпадает с ожидаемым."""
         task = TaskModelTest.task
-        _field_verboses = {
+        field_verboses = {
             'title': 'Заголовок',
             'text': 'Текст',
             'slug': 'Слаг',
             'image': 'Картинка',
         }
-        for value, expected in _field_verboses.items():
+        for value, expected in field_verboses.items():
             with self.subTest():
                 self.assertEqual(
                     task._meta.get_field(value).verbose_name, expected)
@@ -35,14 +35,14 @@ class TaskModelTest(TestCase):
     def test_help_text(self):
         """help_text в полях совпадает с ожидаемым."""
         task = TaskModelTest.task
-        _field_help_texts = {
+        field_help_texts = {
             'title': 'Дайте короткое название задаче',
             'text': 'Опишите суть задачи',
             'slug': ('Укажите адрес для страницы задачи. Используйте только '
                      'латиницу, цифры, дефисы и знаки подчёркивания'),
             'image': 'Загрузите картинку',
         }
-        for value, expected in _field_help_texts.items():
+        for value, expected in field_help_texts.items():
             with self.subTest():
                 self.assertEqual(
                     task._meta.get_field(value).help_text, expected)

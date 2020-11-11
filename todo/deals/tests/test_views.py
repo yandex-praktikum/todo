@@ -28,7 +28,7 @@ class TaskPagesTests(TestCase):
     # Проверяем, что шаблоны используют имена указанных в настройках
     def test_pages_uses_correct_template(self):
         """URL-адрес использует соответствующий шаблон."""
-        _templates_page_names = {
+        templates_page_names = {
             'deals/home.html': reverse('deals:home'),
             'deals/added.html': reverse('deals:task_added'),
             'deals/task_list.html': reverse('deals:task_list'),
@@ -37,7 +37,7 @@ class TaskPagesTests(TestCase):
                 reverse('deals:task_detail', kwargs={'slug': 'test-slug'})
             ),
         }
-        for template, reverse_name in _templates_page_names.items():
+        for template, reverse_name in templates_page_names.items():
             with self.subTest():
                 response = self.authorized_client.get(reverse_name)
                 self.assertTemplateUsed(response, template)
@@ -47,7 +47,7 @@ class TaskPagesTests(TestCase):
         """Шаблон home сформирован с правильным контекстом."""
         response = self.guest_client.get(reverse('deals:home'))
         # Ожидаемые поля формы
-        _form_fields = {
+        form_fields = {
             'title': forms.fields.CharField,
             # в формах TextField преобразуется в CharField
             # с виджетом forms.Textarea
@@ -56,7 +56,7 @@ class TaskPagesTests(TestCase):
             'image': forms.fields.ImageField,
         }
         # Проверяем, что форма создана с ожидаемыми полями
-        for value, expected in _form_fields.items():
+        for value, expected in form_fields.items():
             with self.subTest():
                 form_field = response.context.get('form').fields.get(value)
                 # Проверяет, что поле формы является экземпляром
