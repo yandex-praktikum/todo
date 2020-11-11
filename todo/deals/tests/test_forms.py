@@ -1,3 +1,4 @@
+import os
 import shutil
 import tempfile
 from django.conf import settings
@@ -16,7 +17,9 @@ class TaskCreateFormTests(TestCase):
     def setUpClass(cls):
         super().setUpClass()
         # Создаем временную папку для медиа-файлов
-        settings.MEDIA_ROOT = tempfile.mkdtemp()
+        settings.MEDIA_ROOT = tempfile.mkdtemp(
+            dir=os.path.join(settings.BASE_DIR, 'media')
+        )
         # Создаем запись в базе данных для проверки сушествующего slug
         Task.objects.create(
             title='Тестовый заголовок',
