@@ -20,7 +20,8 @@ class TaskURLTests(TestCase):
         # Создаем неавторизованный клиент
         self.guest_client = Client()
         # Создаем авторизованый клиент
-        self.user = get_user_model().objects.create_user(username='StasBasov')
+        user = get_user_model()
+        self.user = user.objects.create_user(username='StasBasov')
         self.authorized_client = Client()
         self.authorized_client.force_login(self.user)
 

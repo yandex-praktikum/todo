@@ -24,7 +24,7 @@ class TaskModelTest(TestCase):
         field_verboses = {
             'title': 'Заголовок',
             'text': 'Текст',
-            'slug': 'Слаг',
+            'slug': 'Адрес для страницы с задачей',
             'image': 'Картинка',
         }
         for value, expected in field_verboses.items():

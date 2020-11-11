@@ -14,7 +14,7 @@ class Task(models.Model):
         help_text='Опишите суть задачи'
     )
     slug = models.SlugField(
-        'Слаг',
+        'Адрес для страницы с задачей',
         max_length=100,
         unique=True,
         blank=True,
