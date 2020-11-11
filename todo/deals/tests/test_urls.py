@@ -62,32 +62,9 @@ class TaskURLTests(TestCase):
         """
         response = self.client.get('/task/test-slug/', follow=True)
         self.assertRedirects(
-            response, ('/admin/login/?next=/test-slug/'))
+            response, ('/admin/login/?next=/task/test-slug/'))
 
     # Шаблоны по адресам
-    def test_home_url_uses_correct_template(self):
-        """Страница по адресу / использует шаблон deals/home.html."""
-        response = self.authorized_client.get('/')
-        self.assertTemplateUsed(response, 'deals/home.html')
-
-
-    def test_added_url_uses_correct_template(self):
-        """Страница по адресу /added/ использует шаблон deals/added.html."""
-        response = self.authorized_client.get('/added/')
-        self.assertTemplateUsed(response, 'deals/added.html')
-
-    def test_task_list_url_uses_correct_template(self):
-        """Страница по адресу /task/ использует шаблон deals/task_list.html"""
-        response = self.authorized_client.get('/task/')
-        self.assertTemplateUsed(response, 'deals/task_list.html')
-
-    def test_task_detail_url_uses_correct_template(self):
-        """Страница по адресу /task/test-slug/ использует
-        шаблон deals/task_detail.html.
-        """
-        response = self.authorized_client.get('/task/test-slug/')
-        self.assertTemplateUsed(response, 'deals/task_detail.html')
-
     def test_urls_uses_correct_template(self):
         """URL-адрес использует соответствующий шаблон."""
         _templates_url_names = {
