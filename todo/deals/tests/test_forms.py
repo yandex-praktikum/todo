@@ -10,17 +10,13 @@ from deals.forms import TaskCreateForm
 from deals.models import Task
 
 
-
-
 class TaskCreateFormTests(TestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
         # Создаем временную папку для медиа-файлов
         # на момент теста медиа папка будет перопределена
-        settings.MEDIA_ROOT = tempfile.mkdtemp(
-            dir=os.path.join(settings.BASE_DIR, '')
-        )
+        settings.MEDIA_ROOT = tempfile.mkdtemp(dir=settings.BASE_DIR)
         # Создаем запись в базе данных для проверки сушествующего slug
         Task.objects.create(
             title='Тестовый заголовок',
@@ -35,11 +31,9 @@ class TaskCreateFormTests(TestCase):
         shutil.rmtree(settings.MEDIA_ROOT, ignore_errors=True)
         super().tearDownClass()
 
-
     def setUp(self):
         # Создаем неавторизованного клиента
         self.guest_client = Client()
-
 
     def test_create_task(self):
         """Валидная форма создает запись в Task."""
