@@ -12,6 +12,7 @@ class TaskCreateFormTests(TestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
+        # Создаем временную папку для медиа-файлов
         settings.MEDIA_ROOT = tempfile.mkdtemp()
         # Создаем запись в базе данных для проверки сушествующего slug
         Task.objects.create(
