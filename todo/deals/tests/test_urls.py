@@ -1,0 +1,103 @@
+from django.contrib.auth import get_user_model
+from django.test import TestCase, Client
+
+from deals.models import Task
+# дергаем нейм и спотри кактой урл отозвался
+
+class TaskURLTests(TestCase):
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        # Создадим запись в БД, для проверки того, что при добавлении в БД
+        # создается страница по адресу detail/<slug:slug>
+        Task.objects.create(
+            title='Тестовый заголовок',
+            text='Тестовый текст',
+            slug='test-slug'
+        )
+
+    def setUp(self):
+        # Создаем неавторизованный клиент
+        self.guest_client = Client()
+        # Создаем авторизованый клиент
+        self.user = get_user_model().objects.create_user(username='StasBasov')
+        self.authorized_client = Client()
+        self.authorized_client.force_login(self.user)
+
+    # Проверяем общедоступные страницы
+    def test_home_url_exists_at_desired_location(self):
+        """Страница по адресу / доступна любому пользователю."""
+        response = self.guest_client.get('/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_task_added_url_exists_at_desired_location(self):
+        """Страница по адресу /added/ доступна любому пользователю."""
+        response = self.guest_client.get('/added/')
+        self.assertEqual(response.status_code, 200)
+
+    # Проверяем доступность страниц для авторизованного пользователя
+    def test_task_list_url_exists_at_desired_location(self):
+        """Страница по адресу /task/ доступна авторизованному пользователю."""
+        response = self.authorized_client.get('/task/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_task_detail_url_exists_at_desired_location_authorized(self):
+        """Страница по адресу /task/test-slug/ доступна авторизованному
+        пользователю."""
+        response = self.authorized_client.get('/task/test-slug/')
+        self.assertEqual(response.status_code, 200)
+
+    # Проверяем редиректы для неавторизованного пользователя
+    def test_task_list_url_redirect_anonymous_on_admin_login(self):
+        """Страница по адресу /task/ перенаправит анонимного
+        пользователя на страницу логина.
+        """
+        response = self.guest_client.get('/task/', follow=True)
+        self.assertRedirects(
+            response, '/admin/login/?next=/admin/?next=%252Ftask%252F')
+
+    def test_task_detail_url_redirect_anonymous_on_admin_login(self):
+        """Страница по адресу /task/test_slug/ перенаправит анонимного
+        пользователя на страницу логина.
+        """
+        response = self.client.get('/task/test-slug/', follow=True)
+        self.assertRedirects(
+            response, ('/admin/login/?next=/admin/?next='
+                       '%252Ftask%252Ftest-slug%252F'))
+
+    # Шаблоны по адресам
+    def test_home_url_uses_correct_template(self):
+        """Страница по адресу / использует шаблон deals/home.html."""
+        response = self.authorized_client.get('/')
+        self.assertTemplateUsed(response, 'deals/home.html')
+
+
+    def test_added_url_uses_correct_template(self):
+        """Страница по адресу /added/ использует шаблон deals/added.html."""
+        response = self.authorized_client.get('/added/')
+        self.assertTemplateUsed(response, 'deals/added.html')
+
+    def test_task_list_url_uses_correct_template(self):
+        """Страница по адресу /task/ использует шаблон deals/task_list.html"""
+        response = self.authorized_client.get('/task/')
+        self.assertTemplateUsed(response, 'deals/task_list.html')
+
+    def test_task_detail_url_uses_correct_template(self):
+        """Страница по адресу /task/test-slug/ использует
+        шаблон deals/task_detail.html.
+        """
+        response = self.authorized_client.get('/task/test-slug/')
+        self.assertTemplateUsed(response, 'deals/task_detail.html')
+
+    def test_urls_uses_correct_template(self):
+        """URL-адрес использует соответствующий шаблон."""
+        _templates_url_names = {
+            'deals/home.html': '/',
+            'deals/added.html': '/added/',
+            'deals/task_list.html': '/task/',
+            'deals/task_detail.html': '/task/test-slug/',
+        }
+        for template, reverse_name in _templates_url_names.items():
+            with self.subTest():
+                response = self.authorized_client.get(reverse_name)
+                self.assertTemplateUsed(response, template)

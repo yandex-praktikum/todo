@@ -1,0 +1,19 @@
+<html>
+  <body>
+    <h1>Домашняя страница</h1>
+    <ul>
+      <li>
+        <a href="{% url 'staticpages:about' %}">Про меня</a>
+      </li>
+      <li>
+        <a href="{% url 'deals:task_list' %}">Список дел</a>
+      </li>
+    </ul>
+    <h2>Добавить дело</h2>
+    <form action="" method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+    <input type="submit" value="Сохранить">
+  </form>
+  </body>
+</html>
