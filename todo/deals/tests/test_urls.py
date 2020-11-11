@@ -54,7 +54,7 @@ class TaskURLTests(TestCase):
         """
         response = self.guest_client.get('/task/', follow=True)
         self.assertRedirects(
-            response, '/admin/login/?next=/admin/?next=%252Ftask%252F')
+            response, '/admin/login/?next=/task/')
 
     def test_task_detail_url_redirect_anonymous_on_admin_login(self):
         """Страница по адресу /task/test_slug/ перенаправит анонимного
@@ -62,8 +62,7 @@ class TaskURLTests(TestCase):
         """
         response = self.client.get('/task/test-slug/', follow=True)
         self.assertRedirects(
-            response, ('/admin/login/?next=/admin/?next='
-                       '%252Ftask%252Ftest-slug%252F'))
+            response, ('/admin/login/?next=/test-slug/'))
 
     # Шаблоны по адресам
     def test_home_url_uses_correct_template(self):

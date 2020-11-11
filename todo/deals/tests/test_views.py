@@ -25,27 +25,13 @@ class TaskPagesTests(TestCase):
         self.authorized_client = Client()
         self.authorized_client.force_login(self.user)
 
-    # Проверяем, что URL-адреса генерируются
-    # при помощи имен, указанных в настройках
-    def test_pages_accessible_by_name(self):
-        """URL-адрес генерируется при помощи имени."""
-        _urls_names = [
-            reverse('deals:home'),
-            reverse('deals:task_added'),
-            reverse('deals:task_list'),
-            reverse('deals:task_detail', kwargs={'slug': 'test-slug'}),
-        ]
-        for reverse_name in _urls_names:
-            with self.subTest():
-                response = self.authorized_client.get(reverse_name)
-                self.assertEqual(response.status_code, 200)
-
-    # Проверяем используемые шаблоны
+    # Проверяем, что шаблоны используют имена указанных в настройках
     def test_pages_uses_correct_template(self):
         """URL-адрес использует соответствующий шаблон."""
         _templates_page_names = {
             'deals/home.html': reverse('deals:home'),
             'deals/added.html': reverse('deals:task_added'),
+            'deals/task_list.html': reverse('deals:task_list'),
             'deals/task_list.html': reverse('deals:task_list'),
             'deals/task_detail.html': (
                 reverse('deals:task_detail', kwargs={'slug': 'test-slug'})

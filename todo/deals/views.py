@@ -16,14 +16,14 @@ class Home(CreateView):
 
 class TaskList(LoginRequiredMixin, ListView):
     """Список всех доступных заданий."""
-    login_url = '/admin/'
+    login_url = '/admin/login/'
     model = Task
     template_name = 'deals/task_list.html'
 
 
 class TaskDetail(LoginRequiredMixin, DetailView):
     """Задание подробно."""
-    login_url = '/admin/'
+    login_url = '/admin/login/'
     model = Task
     template_name = 'deals/task_detail.html'
 
