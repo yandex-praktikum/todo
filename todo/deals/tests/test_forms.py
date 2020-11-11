@@ -1,3 +1,4 @@
+import shutil
 import tempfile
 from django.conf import settings
 from django.core.files.uploadedfile import SimpleUploadedFile
@@ -6,6 +7,8 @@ from django.urls import reverse
 
 from deals.forms import TaskCreateForm
 from deals.models import Task
+
+
 
 
 class TaskCreateFormTests(TestCase):
@@ -22,6 +25,12 @@ class TaskCreateFormTests(TestCase):
         )
         # Создаем форму, если нужна проверка атрибутов
         cls.form = TaskCreateForm()
+
+    @classmethod
+    def tearDownClass(cls):
+        shutil.rmtree(settings.MEDIA_ROOT, ignore_errors=True)
+        super().tearDownClass()
+
 
     def setUp(self):
         # Создаем неавторизованного клиента
