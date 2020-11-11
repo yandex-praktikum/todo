@@ -6,10 +6,10 @@
         <a href="{% url 'staticpages:about' %}">О проекте</a>
       </li>
       <li>
-        <a href="{% url 'deals:task_list' %}">Список дел</a>
+        <a href="{% url 'deals:task_list' %}">Список задач</a>
       </li>
     </ul>
-    <h2>Добавить дело</h2>
+    <h2>Добавить задачу</h2>
     <form action="" method="post">
       {% csrf_token %}
       {{ form.as_p }}
