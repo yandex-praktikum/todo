@@ -38,6 +38,7 @@ class TaskPagesTests(TestCase):
                 reverse('deals:task_detail', kwargs={'slug': 'test-slug'})
             ),
         }
+
         # Проверяем, что при обращении к name
         # вызывается соответствующий HTML-шаблон
         for template, reverse_name in templates_page_names.items():
@@ -69,6 +70,8 @@ class TaskPagesTests(TestCase):
                 self.assertIsInstance(form_field, expected)
 
     def test_task_list_page_list_is_1(self):
+        # Удостоверимся, что на страницу со списком заданий передаётся
+        # ожидаемое количество объектов
         response = self.authorized_client.get(reverse('deals:task_list'))
         self.assertEqual(len(response.context['object_list']), 1)
 
