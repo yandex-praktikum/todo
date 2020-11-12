@@ -47,15 +47,16 @@ class TaskURLTests(TestCase):
 
     # Проверяем редиректы для неавторизованного пользователя
     def test_task_list_url_redirect_anonymous_on_admin_login(self):
-        """Страница /task/ перенаправит анонимного пользователя на страницу логина.
+        """Страница /task/ перенаправит анонимного пользователя
+        на страницу логина.
         """
         response = self.guest_client.get('/task/', follow=True)
         self.assertRedirects(
             response, '/admin/login/?next=/task/')
 
     def test_task_detail_url_redirect_anonymous_on_admin_login(self):
-        """Страница /task/test_slug/ перенаправит анонимного
-        пользователя на страницу логина.
+        """Страница /task/test_slug/ перенаправит анонимного пользователя
+        на страницу логина.
         """
         response = self.client.get('/task/test-slug/', follow=True)
         self.assertRedirects(

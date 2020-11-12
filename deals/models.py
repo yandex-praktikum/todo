@@ -33,8 +33,8 @@ class Task(models.Model):
         return self.title
 
     # Расширение встроенного метода save(): если поле slug не заполнено -
-    # транслитерировать в латиницу содержимое поля title,
-    # обрезать до ста знаков и сохранить в поле slug
+    # транслитерировать в латиницу содержимое поля title и
+    # обрезать до ста знаков
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.title)[:100]

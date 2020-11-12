@@ -1,4 +1,3 @@
-import os
 import shutil
 import tempfile
 from django.conf import settings
@@ -28,6 +27,7 @@ class TaskCreateFormTests(TestCase):
 
     @classmethod
     def tearDownClass(cls):
+        # Рекурсивно удаляем временную после завершения тестов
         shutil.rmtree(settings.MEDIA_ROOT, ignore_errors=True)
         super().tearDownClass()
 
@@ -36,9 +36,9 @@ class TaskCreateFormTests(TestCase):
         self.guest_client = Client()
 
     def test_create_task(self):
-        """Валидная форма создает запись в Task."""     
+        """Валидная форма создает запись в Task."""
         # Подсчитаем количество записей в Task
-        tasks_count = Task.objects.count()  
+        tasks_count = Task.objects.count()
         # Подготавливаем данные для передачи в форму
         small_gif = (
             b'\x47\x49\x46\x38\x39\x61\x01\x00'
@@ -69,7 +69,7 @@ class TaskCreateFormTests(TestCase):
 
     def test_cant_create_existing_slug(self):
         # Подсчитаем количество записей в Task
-        tasks_count = Task.objects.count() 
+        tasks_count = Task.objects.count()
         form_data = {
             'title': 'Заголовок из формы',
             'text': 'Текст из формы',
@@ -81,19 +81,22 @@ class TaskCreateFormTests(TestCase):
             data=form_data,
             follow=True
         )
-        # Убедимся, что запись в базе данных не создалась: 
+        # Убедимся, что запись в базе данных не создалась:
         # сравним количество записей в Task до и после отправки формы
         self.assertEqual(Task.objects.count(), tasks_count)
         # Проверим, что форма вернула ошибку с ожидаемым текстом:
-        # из объекта responce берём словарь 'form', 
+        # из объекта responce берём словарь 'form',
         # указываем ожидаемую ошибку для поля 'slug' этого словаря
         self.assertFormError(
-            response, 'form', 'slug', 'Адрес "first" уже существует, придумайте уникальное значение'
+            response,
+            'form',
+            'slug',
+            'Адрес "first" уже существует, придумайте уникальное значение'
         )
         # Проверим, что ничего не упало и страница отдаёт код 200
         self.assertEqual(response.status_code, 200)
 
-    # Если не тестировали содержимое лейблов в models 
+    # Если не тестировали содержимое лейблов в models
     # или переопределили их при создании формы - тестируем так:
     def test_title_label(self):
         title_label = TaskCreateFormTests.form.fields['title'].label

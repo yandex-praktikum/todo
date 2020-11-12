@@ -38,7 +38,8 @@ class TaskPagesTests(TestCase):
                 reverse('deals:task_detail', kwargs={'slug': 'test-slug'})
             ),
         }
-        # Проверяем, что при обращении к name вызывается соответствующий HTML-шаблон
+        # Проверяем, что при обращении к name
+        # вызывается соответствующий HTML-шаблон
         for template, reverse_name in templates_page_names.items():
             with self.subTest():
                 response = self.authorized_client.get(reverse_name)
@@ -52,13 +53,14 @@ class TaskPagesTests(TestCase):
         # указываем, объектами какого класса должны быть поля формы
         form_fields = {
             'title': forms.fields.CharField,
-            # При создании формы поля модели типа TextField 
-            # преобразуются в CharField с виджетом forms.Textarea 
+            # При создании формы поля модели типа TextField
+            # преобразуются в CharField с виджетом forms.Textarea
             'text': forms.fields.CharField,
             'slug': forms.fields.SlugField,
             'image': forms.fields.ImageField,
         }
-        # Проверяем, что типы полей формы в словаре context соответствуют ожиданиям
+        # Проверяем, что типы полей формы в словаре context
+        # соответствуют ожиданиям
         for value, expected in form_fields.items():
             with self.subTest():
                 form_field = response.context.get('form').fields.get(value)
@@ -71,7 +73,7 @@ class TaskPagesTests(TestCase):
         self.assertEqual(len(response.context['object_list']), 1)
 
     # Проверяем, что словарь context страницы /task
-    # в первом элементе списка object_list содержит ожидаемые значения 
+    # в первом элементе списка object_list содержит ожидаемые значения
     def test_task_list_page_show_correct_context(self):
         """Шаблон task_list сформирован с правильным контекстом."""
         response = self.authorized_client.get(reverse('deals:task_list'))
@@ -85,7 +87,7 @@ class TaskPagesTests(TestCase):
         self.assertEqual(task_slug_0, 'test-slug')
 
     # Проверяем, что словарь context страницы task/test-slug
-    # содержит ожидаемые значения 
+    # содержит ожидаемые значения
     def test_task_detail_pages_show_correct_context(self):
         """Шаблон task_detail сформирован с правильным контекстом."""
         response = self.authorized_client.\

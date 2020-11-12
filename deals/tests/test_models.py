@@ -10,8 +10,8 @@ class TaskModelTest(TestCase):
         # Создаём тестовую запись в БД
         # Не указываем значение slug, ждем, что при создании
         # оно создастся автоматически из title.
-        # А title сделаем таким, чтобы после транслитерации он стал более 100 символов 
-        # (буква "ж" транслитерируется в два символа: "zh")
+        # А title сделаем таким, чтобы после транслитерации он стал
+        # более 100 символов (буква "ж" транслитерируется в два символа: "zh")
         Task.objects.create(
             title='Ж'*100,
             text='Тестовый текст'
@@ -55,7 +55,9 @@ class TaskModelTest(TestCase):
         self.assertEquals(slug, 'zh'*50)
 
     def test_text_slug_max_length_not_exceed(self):
-        """Длинный slug обрезается и не превышает max_length поля slug в модели."""
+        """
+        Длинный slug обрезается и не превышает max_length поля slug в модели.
+        """
         task = TaskModelTest.task
         max_length_slug = task._meta.get_field('slug').max_length
         length_slug = (len(task.slug))

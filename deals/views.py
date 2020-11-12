@@ -8,6 +8,7 @@ from .forms import TaskCreateForm
 
 
 class Home(CreateView):
+    """Форма добавления задания."""
     template_name = 'deals/home.html'
     form_class = TaskCreateForm
     success_url = reverse_lazy('deals:task_added')
