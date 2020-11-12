@@ -47,6 +47,13 @@ class TaskPagesTests(TestCase):
                 self.assertTemplateUsed(response, template)
 
     # Проверка словаря контекста главной страницы (в нём передаётся форма)
+    def test(self):
+        response = self.guest_client.get(reverse('deals:home'))
+        r = response.context.get('form').initial.get('__all__')
+        # r = response.context.get('form').initial.get('title')
+        print(r)
+
+
     def test_home_page_show_correct_context(self):
         """Шаблон home сформирован с правильным контекстом."""
         response = self.guest_client.get(reverse('deals:home'))
@@ -60,6 +67,7 @@ class TaskPagesTests(TestCase):
             'slug': forms.fields.SlugField,
             'image': forms.fields.ImageField,
         }
+
         # Проверяем, что типы полей формы в словаре context
         # соответствуют ожиданиям
         for value, expected in form_fields.items():
