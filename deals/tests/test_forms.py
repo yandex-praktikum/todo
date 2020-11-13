@@ -27,9 +27,10 @@ class TaskCreateFormTests(TestCase):
 
     @classmethod
     def tearDownClass(cls):
+        super().tearDownClass()
         # Рекурсивно удаляем временную после завершения тестов
         shutil.rmtree(settings.MEDIA_ROOT, ignore_errors=True)
-        super().tearDownClass()
+
 
     def setUp(self):
         # Создаем неавторизованный клиент

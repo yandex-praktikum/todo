@@ -6,6 +6,7 @@ from pytils.translit import slugify
 class Task(models.Model):
     title = models.CharField(
         'Заголовок',
+        default='Значение по-умолчанию',
         max_length=100,
         help_text='Дайте короткое название задаче'
     )
