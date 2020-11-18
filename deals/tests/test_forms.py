@@ -13,7 +13,6 @@ class TaskCreateFormTests(TestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-
         Task.objects.create(
             title='Тестовый заголовок',
             text='Тестовый текст',
@@ -21,9 +20,6 @@ class TaskCreateFormTests(TestCase):
         )
         # Создаем форму, если нужна проверка атрибутов
         cls.form = TaskCreateForm()
-
-
-
 
     def setUp(self):
         # Создаем неавторизованный клиент
