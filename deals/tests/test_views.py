@@ -118,8 +118,9 @@ class TaskPagesTests(TestCase):
     # содержит ожидаемые значения
     def test_task_detail_pages_show_correct_context(self):
         """Шаблон task_detail сформирован с правильным контекстом."""
-        response = self.authorized_client.\
-            get(reverse('deals:task_detail', kwargs={'slug': 'test-slug'}))
+        response = self.authorized_client.get(
+            reverse('deals:task_detail', kwargs={'slug': 'test-slug'})
+            )
         self.assertEqual(response.context.get('task').title, 'Заголовок')
         self.assertEqual(response.context.get('task').text, 'Текст')
         self.assertEqual(response.context.get('task').slug, 'test-slug')
