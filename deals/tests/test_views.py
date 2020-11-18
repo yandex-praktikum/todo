@@ -1,16 +1,9 @@
-import os
-import shutil
-import tempfile
-from django.conf import settings
-from django.core.files.uploadedfile import SimpleUploadedFile
 from django.contrib.auth import get_user_model
 from django.test import Client, TestCase
 from django.urls import reverse
 from django import forms
 
 from deals.models import Task
-
-
 
 
 class TaskPagesTests(TestCase):
