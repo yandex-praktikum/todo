@@ -32,7 +32,6 @@ class TaskPagesTests(TestCase):
             'deals/home.html': reverse('deals:home'),
             'deals/added.html': reverse('deals:task_added'),
             'deals/task_list.html': reverse('deals:task_list'),
-            'deals/task_list.html': reverse('deals:task_list'),
             'deals/task_detail.html': (
                 reverse('deals:task_detail', kwargs={'slug': 'test-slug'})
             ),
