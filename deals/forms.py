@@ -10,7 +10,7 @@ class TaskCreateForm(forms.ModelForm):
     class Meta:
         model = Task
         # Магия Джанго: через '__all__' создаётся форма из всех полей модели
-        # labels и help_texts берутся из verbose и help_text
+        # labels и help_texts берутся из verbose_name и help_text
         fields = '__all__'
 
     # Валидация поля slug
