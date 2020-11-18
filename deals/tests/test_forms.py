@@ -13,10 +13,7 @@ class TaskCreateFormTests(TestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        # Создаем временную папку для медиа-файлов;
-        # на момент теста медиа папка будет перопределена
-        settings.MEDIA_ROOT = tempfile.mkdtemp(dir=settings.BASE_DIR)
-        # Создаем запись в базе данных для проверки сушествующего slug
+
         Task.objects.create(
             title='Тестовый заголовок',
             text='Тестовый текст',
@@ -25,11 +22,7 @@ class TaskCreateFormTests(TestCase):
         # Создаем форму, если нужна проверка атрибутов
         cls.form = TaskCreateForm()
 
-    @classmethod
-    def tearDownClass(cls):
-        super().tearDownClass()
-        # Рекурсивно удаляем временную после завершения тестов
-        shutil.rmtree(settings.MEDIA_ROOT, ignore_errors=True)
+
 
 
     def setUp(self):
