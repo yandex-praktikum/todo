@@ -30,7 +30,7 @@ class TaskModelTest(TestCase):
             'image': 'Картинка',
         }
         for value, expected in field_verboses.items():
-            with self.subTest():
+            with self.subTest(value=value):
                 self.assertEqual(
                     task._meta.get_field(value).verbose_name, expected)
 
@@ -45,7 +45,7 @@ class TaskModelTest(TestCase):
             'image': 'Загрузите картинку',
         }
         for value, expected in field_help_texts.items():
-            with self.subTest():
+            with self.subTest(value=value):
                 self.assertEqual(
                     task._meta.get_field(value).help_text, expected)
 

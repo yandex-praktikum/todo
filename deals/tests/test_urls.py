@@ -67,11 +67,11 @@ class TaskURLTests(TestCase):
         """URL-адрес использует соответствующий шаблон."""
         templates_url_names = {
             'deals/home.html': '/',
-            'deals/added.html': '/added/',
+            'deals/addвed.html': '/added/',
             'deals/task_list.html': '/task/',
             'deals/task_detail.html': '/task/test-slug/',
         }
         for template, url in templates_url_names.items():
-            with self.subTest():
+            with self.subTest(url=url):
                 response = self.authorized_client.get(url)
                 self.assertTemplateUsed(response, template)

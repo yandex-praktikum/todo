@@ -39,7 +39,7 @@ class TaskPagesTests(TestCase):
         # Проверяем, что при обращении к name
         # вызывается соответствующий HTML-шаблон
         for template, reverse_name in templates_page_names.items():
-            with self.subTest():
+            with self.subTest(template=template):
                 response = self.authorized_client.get(reverse_name)
                 self.assertTemplateUsed(response, template)
 
@@ -60,7 +60,7 @@ class TaskPagesTests(TestCase):
         # Проверяем, что типы полей формы в словаре context
         # соответствуют ожиданиям
         for value, expected in form_fields.items():
-            with self.subTest():
+            with self.subTest(value=value):
                 form_field = response.context.get('form').fields.get(value)
                 # Проверяет, что поле формы является экземпляром
                 # указанного класса
