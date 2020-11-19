@@ -7,12 +7,14 @@ class TaskURLTests(TestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
+
         # Создадим запись в БД для проверки доступности адреса task/test-slug/
         Task.objects.create(
             title='Тестовый заголовок',
             text='Тестовый текст',
-            slug='test-slug'
+            slug='test-slug',
         )
+
 
     def setUp(self):
         # Создаем неавторизованный клиент
@@ -67,7 +69,7 @@ class TaskURLTests(TestCase):
         """URL-адрес использует соответствующий шаблон."""
         templates_url_names = {
             'deals/home.html': '/',
-            'deals/addвed.html': '/added/',
+            'deals/added.html': '/added/',
             'deals/task_list.html': '/task/',
             'deals/task_detail.html': '/task/test-slug/',
         }
