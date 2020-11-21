@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import Home, TaskList, TaskDetail, TaskAddSuccess
+from .views import Home, TaskAddSuccess, TaskDetail, TaskList
 
 app_name = 'deals'
 
