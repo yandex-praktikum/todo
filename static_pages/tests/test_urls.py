@@ -13,4 +13,4 @@ class StaticURLTests(TestCase):
     def test_about_url_uses_correct_template(self):
         """Проверка шаблона для адреса /page/about/."""
         response = self.guest_client.get('/page/about/')
-        self.assertTemplateUsed(response, 'staticpages/about.html')
+        self.assertTemplateUsed(response, 'static_pages/about.html')

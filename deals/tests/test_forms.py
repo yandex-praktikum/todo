@@ -105,4 +105,4 @@ class TaskCreateFormTests(TestCase):
 
     def test_title_help_text(self):
         title_help_text = TaskCreateFormTests.form.fields['title'].help_text
-        self.assertEqual(title_help_text, 'Хелп для title')
+        self.assertEqual(title_help_text, 'Дайте короткое название задаче')
