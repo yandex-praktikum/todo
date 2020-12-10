@@ -67,6 +67,9 @@ class TaskCreateFormTests(TestCase):
         self.assertRedirects(response, '/added/')
         # Проверяем, увеличилось ли число постов
         self.assertEqual(Task.objects.count(), tasks_count+1)
+        # Проверяем, что создалась запись с нашим слагом
+        self.assertTrue(Task.objects.filter(slug='testovyij-zagolovok').exists())
+
 
     def test_cant_create_existing_slug(self):
         # Подсчитаем количество записей в Task
