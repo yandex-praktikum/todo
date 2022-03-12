@@ -1,4 +1,4 @@
 django==2.2.6
-pillow==7.0.0
+pillow==9.0.1
 pytz==2019.3
 pytils==0.3
