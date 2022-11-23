@@ -5,6 +5,8 @@ from django import forms
 
 from deals.models import Task
 
+User = get_user_model()
+
 
 class TaskPagesTests(TestCase):
     @classmethod
@@ -20,7 +22,7 @@ class TaskPagesTests(TestCase):
         # Создаём неавторизованный клиент
         self.guest_client = Client()
         # Создаём авторизованный клиент
-        self.user = get_user_model().objects.create_user(username='StasBasov')
+        self.user = User.objects.create_user(username='StasBasov')
         self.authorized_client = Client()
         self.authorized_client.force_login(self.user)
 
@@ -46,7 +48,7 @@ class TaskPagesTests(TestCase):
     def test_home_page_show_correct_context(self):
         """Шаблон home сформирован с правильным контекстом."""
         response = self.guest_client.get(reverse('deals:home'))
-        # Список ожидаемых типов полей формы:
+        # Словарь ожидаемых типов полей формы:
         # указываем, объектами какого класса должны быть поля формы
         form_fields = {
             'title': forms.fields.CharField,
@@ -61,7 +63,7 @@ class TaskPagesTests(TestCase):
         # соответствуют ожиданиям
         for value, expected in form_fields.items():
             with self.subTest(value=value):
-                form_field = response.context.get('form').fields.get(value)
+                form_field = response.context['form'].fields[value]
                 # Проверяет, что поле формы является экземпляром
                 # указанного класса
                 self.assertIsInstance(form_field, expected)
@@ -69,8 +71,9 @@ class TaskPagesTests(TestCase):
     def test_task_list_page_list_is_1(self):
         # Удостоверимся, что на страницу со списком заданий передаётся
         # ожидаемое количество объектов
+        
         response = self.authorized_client.get(reverse('deals:task_list'))
-        self.assertEqual(len(response.context['object_list']), 1)
+        self.assertEqual(response.context['object_list'].count(), 1)
 
     # Проверяем, что словарь context страницы /task
     # в первом элементе списка object_list содержит ожидаемые значения
@@ -79,9 +82,10 @@ class TaskPagesTests(TestCase):
         response = self.authorized_client.get(reverse('deals:task_list'))
         # Взяли первый элемент из списка и проверили, что его содержание
         # совпадает с ожидаемым
-        task_title_0 = response.context.get('object_list')[0].title
-        task_text_0 = response.context.get('object_list')[0].text
-        task_slug_0 = response.context.get('object_list')[0].slug
+        first_object = response.context['object_list'][0]
+        task_title_0 = first_object.title
+        task_text_0 = first_object.text
+        task_slug_0 = first_object.slug
         self.assertEqual(task_title_0, 'Заголовок')
         self.assertEqual(task_text_0, 'Текст')
         self.assertEqual(task_slug_0, 'test-slug')
@@ -93,12 +97,12 @@ class TaskPagesTests(TestCase):
         response = self.authorized_client.get(
             reverse('deals:task_detail', kwargs={'slug': 'test-slug'})
             )
-        self.assertEqual(response.context.get('task').title, 'Заголовок')
-        self.assertEqual(response.context.get('task').text, 'Текст')
-        self.assertEqual(response.context.get('task').slug, 'test-slug')
+        self.assertEqual(response.context['task'].title, 'Заголовок')
+        self.assertEqual(response.context['task'].text, 'Текст')
+        self.assertEqual(response.context['task'].slug, 'test-slug')
 
     def test_initial_value(self):
         """Предустановленнное значение формы."""
         response = self.guest_client.get(reverse('deals:home'))
-        title_inital = response.context.get('form').fields.get('title').initial
+        title_inital = response.context['form'].fields['title'].initial
         self.assertEqual(title_inital, 'Значение по-умолчанию')

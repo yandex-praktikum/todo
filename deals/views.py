@@ -21,6 +21,7 @@ class TaskList(LoginRequiredMixin, ListView):
     template_name = 'deals/task_list.html'
 
 
+
 class TaskDetail(LoginRequiredMixin, DetailView):
     """Задание подробно."""
     login_url = '/admin/login/'

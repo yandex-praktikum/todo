@@ -3,6 +3,9 @@ from django.test import TestCase, Client
 
 from deals.models import Task
 
+User = get_user_model()
+
+
 class TaskURLTests(TestCase):
     @classmethod
     def setUpClass(cls):
@@ -15,13 +18,11 @@ class TaskURLTests(TestCase):
             slug='test-slug',
         )
 
-
     def setUp(self):
         # Создаем неавторизованный клиент
         self.guest_client = Client()
         # Создаем авторизованый клиент
-        user = get_user_model()
-        self.user = user.objects.create_user(username='StasBasov')
+        self.user = User.objects.create_user(username='StasBasov')
         self.authorized_client = Client()
         self.authorized_client.force_login(self.user)
 
