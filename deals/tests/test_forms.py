@@ -1,22 +1,25 @@
 import shutil
 import tempfile
 
-from django.conf import settings
-from django.core.files.uploadedfile import SimpleUploadedFile
-from django.test import Client, TestCase
-from django.urls import reverse
-
 from deals.forms import TaskCreateForm
 from deals.models import Task
+from django.conf import settings
+from django.core.files.uploadedfile import SimpleUploadedFile
+from django.test import Client, TestCase, override_settings
+from django.urls import reverse
+
+# Создаем временную папку для медиа-файлов;
+# на момент теста медиа папка будет переопределена
+TEMP_MEDIA_ROOT = tempfile.mkdtemp(dir=settings.BASE_DIR)
 
 
+# Для сохранения media-файлов в тестах будет использоватьсяgs
+# временная папка TEMP_MEDIA_ROOT, а потом мы ее удалим
+@override_settings(MEDIA_ROOT=TEMP_MEDIA_ROOT)
 class TaskCreateFormTests(TestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        # Создаем временную папку для медиа-файлов;
-        # на момент теста медиа папка будет перопределена
-        settings.MEDIA_ROOT = tempfile.mkdtemp(dir=settings.BASE_DIR)
         # Создаем запись в базе данных для проверки сушествующего slug
         Task.objects.create(
             title='Тестовый заголовок',
@@ -29,8 +32,11 @@ class TaskCreateFormTests(TestCase):
     @classmethod
     def tearDownClass(cls):
         super().tearDownClass()
-        # Рекурсивно удаляем временную после завершения тестов
-        shutil.rmtree(settings.MEDIA_ROOT, ignore_errors=True)
+        # Модуль shutil - библиотека Python с прекрасными инструментами 
+        # для управления файлами и директориями: 
+        # создание, удаление, копирование, перемещение, изменение папок и файлов
+        # Метод shutil.rmtree удаляет директорию и всё её содержимое
+        shutil.rmtree(TEMP_MEDIA_ROOT, ignore_errors=True)
 
     def setUp(self):
         # Создаем неавторизованный клиент
@@ -64,12 +70,17 @@ class TaskCreateFormTests(TestCase):
             follow=True
         )
         # Проверяем, сработал ли редирект
-        self.assertRedirects(response, '/added/')
+        self.assertRedirects(response, reverse('deals:task_added'))
         # Проверяем, увеличилось ли число постов
         self.assertEqual(Task.objects.count(), tasks_count+1)
         # Проверяем, что создалась запись с нашим слагом
-        self.assertTrue(Task.objects.filter(slug='testovyij-zagolovok').exists())
-
+        self.assertTrue(
+            Task.objects.filter(
+                slug='testovyij-zagolovok',
+                text='Тестовый текст',
+                image='tasks/small.gif'
+                ).exists()
+        )
 
     def test_cant_create_existing_slug(self):
         # Подсчитаем количество записей в Task

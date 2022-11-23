@@ -8,18 +8,17 @@ class TaskModelTest(TestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        # Создаём тестовую запись в БД
+        # Создаём тестовую запись в БД и
+        # сохраняем ее в качестве переменной класса
         # Не указываем значение slug, ждем, что при создании
         # оно создастся автоматически из title.
         # А title сделаем таким, чтобы после транслитерации он стал
         # более 100 символов (буква "ж" транслитерируется в два символа: "zh")
-        Task.objects.create(
-            id=1,
+        #
+        cls.task = Task.objects.create(
             title='Ж'*100,
             text='Тестовый текст'
         )
-        # Сохраняем созданную запись в качестве переменной класса
-        cls.task = Task.objects.get(id=1)
 
     def test_verbose_name(self):
         """verbose_name в полях совпадает с ожидаемым."""
@@ -62,7 +61,7 @@ class TaskModelTest(TestCase):
         """
         task = TaskModelTest.task
         max_length_slug = task._meta.get_field('slug').max_length
-        length_slug = (len(task.slug))
+        length_slug = len(task.slug)
         self.assertEqual(max_length_slug, length_slug)
 
     def test_object_name_is_title_fild(self):
